@@ -13,3 +13,6 @@
 [submodule "helix"]
 	path = helix
 	url = https://github.com/NicoDevStuff/helix-config
+[submodule "awesome"]
+	path = awesome
+	url = https://github.com/NicoDevStuff/awesomewm-config
