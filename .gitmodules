@@ -1,0 +1,15 @@
+[submodule "nvim"]
+	path = nvim
+	url = https://github.com/NicoDevStuff/nvim-config
+[submodule "helix-config"]
+	path = helix-config
+	url = https://github.com/NicoDevStuff/helix-config
+[submodule "leftwm"]
+	path = leftwm
+	url = https://github.com/NicoDevStuff/leftwm-config
+[submodule "fish"]
+	path = fish
+	url = https://github.com/NicoDevStuff/fish-config
+[submodule "helix"]
+	path = helix
+	url = https://github.com/NicoDevStuff/helix-config
