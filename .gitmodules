@@ -16,3 +16,6 @@
 [submodule "awesome"]
 	path = awesome
 	url = https://github.com/NicoDevStuff/awesomewm-config
+[submodule "dwm"]
+	path = dwm
+	url = https://github.com/NicoDevStuff/dwm-build
