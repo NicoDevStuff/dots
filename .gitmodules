@@ -19,3 +19,6 @@
 [submodule "dwm"]
 	path = dwm
 	url = https://github.com/NicoDevStuff/dwm-build
+[submodule "dwmblocks"]
+	path = dwmblocks
+	url = https://github.com/NicoDevStuff/dwmblocks-build
