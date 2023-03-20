@@ -36,17 +36,17 @@
 
 
 # Increase volume
-"pactl set-sink-volume @DEFAULT_SINK@ +1000"
+"pactl set-sink-volume @DEFAULT_SINK@ +1000 ; pkill -RTMIN+10 dwmblocks"
     m:0x0 + c:123
     XF86AudioRaiseVolume 
 
 # Decrease volume
-"pactl set-sink-volume @DEFAULT_SINK@ -1000"
+"pactl set-sink-volume @DEFAULT_SINK@ -1000 ; pkill -RTMIN+10 dwmblocks"
     m:0x0 + c:122
     XF86AudioLowerVolume 
 
 # Mute volume
-"pactl set-sink-mute @DEFAULT_SINK@ toggle"
+"pactl set-sink-volume @DEFAULT_SINK@ 0 ; pkill -RTMIN+10 dwmblocks"
     m:0x0 + c:121
     XF86AudioMute 
 
@@ -55,25 +55,4 @@
     m:0x0 + c:198
     XF86AudioMicMute 
 
-#Ue
-"xdotool type ü"
-    m:0x40 + c:34
-    Mod4 + bracketleft 
-
-#Oe
-"xdotool type ö"
-    m:0x40 + c:47
-    Mod4 + semicolon 
-
-#Ae
-"xdotool type ä"
-    m:0x40 + c:48
-    Mod4 + apostrophe 
-
-#Ss
-"xdotool type ß"
-    m:0x40 + c:20
-    Mod4 + minus 
-
-#
 # End of xbindkeys configuration
