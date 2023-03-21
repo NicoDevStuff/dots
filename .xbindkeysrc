@@ -46,7 +46,7 @@
     XF86AudioLowerVolume 
 
 # Mute volume
-"pactl set-sink-volume @DEFAULT_SINK@ 0 ; pkill -RTMIN+10 dwmblocks"
+"pactl set-sink-mute @DEFAULT_SINK@ toggle ; pkill -RTMIN+10 dwmblocks"
     m:0x0 + c:121
     XF86AudioMute 
 
