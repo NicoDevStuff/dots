@@ -39,3 +39,6 @@ mimeapps.list
 QtProject.conf
 chessx/
 pychess/
+MuseScore/
+appimagelauncher.cfg
+systemd/user/default.target.wants/appimagelauncherd.service
