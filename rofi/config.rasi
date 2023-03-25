@@ -1,7 +1,7 @@
 @theme "gruvbox-dark"
 
 configuration {
-	modes: "window,drun,run,ssh";
+	modes: "window,drun,run,ssh,calc";
 	font: "JetBrains Mono 13";
 	display-drun: "Applications: ";
 	
@@ -38,7 +38,8 @@ configuration {
 }
 
 window {
-  width: 30%;
+  /* width: 30%; */
+  border: 0;
 }
 
 element {
@@ -58,7 +59,6 @@ element-text {
 
 element-icon {
   size: 30;
-
 }
 
 entry {
@@ -75,7 +75,7 @@ listview {
   padding: 8 12;
   background-color: @bg;
   columns: 1;
-  lines: 8;
+  lines: 12;
 }
 
 mainbox {
