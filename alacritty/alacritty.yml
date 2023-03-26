@@ -15,10 +15,10 @@ scrolling:
 
 font:
   normal:
-    family: JetBrainsMono
+    family: JetBrains Mono
     style: Normal
   bold:
-    family: JetBrainsMono
+    family: JetBrains Mono
     style: Bold
   italic:
     family: JetBrains Mono
