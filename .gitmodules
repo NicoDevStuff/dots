@@ -25,3 +25,6 @@
 [submodule "st"]
 	path = st
 	url = https://github.com/NicoDevStuff/st-build
+[submodule "qtile"]
+	path = qtile
+	url = git@github.com:NicoDevStuff/qtile.git

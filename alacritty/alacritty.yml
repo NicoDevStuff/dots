@@ -1,13 +1,14 @@
 env:
-  TERM: alacritty
+  TERM: xterm-256color
 
 window:
-  opacity: 0.65
-  dynamic_title: true
-  
+  padding:
+    x: 10
+    y: 10
   class:
-    instance: Alactritty
+    instance: Alacritty
     general: Alacritty
+  opacity: 0.6
 
 scrolling:
   history: 10000
@@ -15,19 +16,19 @@ scrolling:
 
 font:
   normal:
-    family: JetBrains Mono
-    style: Normal
+    family: JetBrains Mono 
+    style:  Regular
   bold:
     family: JetBrains Mono
-    style: Bold
+    style:  Bold
   italic:
     family: JetBrains Mono
-    style: Italic
+    style:  Italic
   bold_italic:
     family: JetBrains Mono
     style: Bold Italic
-  size: 12.0
-draw_bold_text_with_bright_colors: false
+  size: 13
+draw_bold_text_with_bright_colors: true
 
 import:
   # - ~/.config/alacritty/gruvbox-material.yml
@@ -52,8 +53,8 @@ cursor:
 
 live_config_reload: true
 
-mouse:
-  hide_when_typing: true
+shell:
+  program: /usr/bin/fish
 
 key_bindings:
   - { key: Key0,           mods: Control,                         action: ResetFontSize    }

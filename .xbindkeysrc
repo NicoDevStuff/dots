@@ -54,5 +54,7 @@
 "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
     m:0x0 + c:198
     XF86AudioMicMute 
-
+"notify-send "🤓🤓🤓🤓" "<u><b>CAPS</b></u>" -u critical"
+    m:0x2 + c:66
+    Caps_Lock
 # End of xbindkeys configuration

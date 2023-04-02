@@ -43,3 +43,5 @@ MuseScore/
 appimagelauncher.cfg
 systemd/user/default.target.wants/appimagelauncherd.service
 cava/config
+sxhkd/sxhkdrc
+bspwm/bspwmrc
