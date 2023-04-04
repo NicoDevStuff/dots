@@ -53,9 +53,10 @@ disabled = false
 time_format = "%T" # Hour:Minute:Second Format
 format = '[[  $time ](fg:bright-white bg:dark-blue2)]($style)'
 
+# ◆ ~ ❯❯❯ 
 [character]
-success_symbol = "[➜](bold bright-green)"
-error_symbol = "[➜](bold bright-red)"
+success_symbol = "[◆](bold bright-green) [❯](bold bright-white)[❯](bold cyan)[❯](bold green)"
+error_symbol = "[◆](bold bright-red) [❯](bold bright-white)[❯](bold cyan)[❯](bold green)"
 
 [line_break]
 disabled = false
@@ -158,7 +159,6 @@ symbol = " "
 
 [gcloud]
 format = '[ $symbol$account(@$domain)(\($region\))](bold fg:green bg:gray)'
-
 
 [golang]
 format = '[ $symbol($version)](bold fg:green bg:gray)'
