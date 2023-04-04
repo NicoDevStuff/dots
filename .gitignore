@@ -45,3 +45,6 @@ systemd/user/default.target.wants/appimagelauncherd.service
 cava/config
 sxhkd/sxhkdrc
 bspwm/bspwmrc
+Epic/
+libreoffice/
+cef_user_data/

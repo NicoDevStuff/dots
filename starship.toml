@@ -1,0 +1,25 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = "[➜](bold red)"
+
+[package]
+disabled = true
+
+[line_break]
+disabled = false
+
+# Programming languages i use
+[c]
+format = 'via [$name $version]($style)'
+
+[python]
+symbol = '🐍 '
+python_binary = 'python3'
+pyenv_version_name = true
+
+[rust]
+format = 'via [⚙️ $version](red bold)'
