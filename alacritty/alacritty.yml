@@ -16,7 +16,7 @@ scrolling:
 
 font:
   normal:
-    family: JetBrains Mono 
+    family: JetBrains Mono
     style:  Regular
   bold:
     family: JetBrains Mono
@@ -31,8 +31,8 @@ font:
 draw_bold_text_with_bright_colors: true
 
 import:
-  # - ~/.config/alacritty/gruvbox-material.yml
-  - ~/.config/alacritty/gruvbox-normal.yml
+  - ~/.config/alacritty/gruvbox-material.yml
+  # - ~/.config/alacritty/gruvbox-normal.yml
 
 bell:
   animation: EaseOutExpo
@@ -54,7 +54,7 @@ cursor:
 live_config_reload: true
 
 shell:
-  program: /usr/bin/fish
+  program: /usr/bin/zsh
 
 key_bindings:
   - { key: Key0,           mods: Control,                         action: ResetFontSize    }
