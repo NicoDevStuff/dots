@@ -18,7 +18,7 @@
 	url = https://github.com/NicoDevStuff/awesomewm-config
 [submodule "dwm"]
 	path = dwm
-	url = https://github.com/NicoDevStuff/dwm-build
+	url = git@github.com:NicoDevStuff/dwm-2.0.git
 [submodule "dwmblocks"]
 	path = dwmblocks
 	url = https://github.com/NicoDevStuff/dwmblocks-build
