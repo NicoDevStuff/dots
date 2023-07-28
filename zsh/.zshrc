@@ -12,7 +12,7 @@ HISTFILE=~/.config/zsh/histfile
 HISTSIZE=10000
 SAVEHIST=10000
 bindkey -e
-zstyle :compinstall filename '/home/nico/.config/zsh/.zshrc'
+zstyle :compinstall filename "${HOME}/.config/zsh/.zshrc"
 autoload -Uz compinit
 compinit
 
@@ -54,3 +54,5 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+# cd ~
