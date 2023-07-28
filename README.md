@@ -1,4 +1,4 @@
 # dots
-My dotfiles
+My dotfiles 🗿🗿🗿
 
-Feel free to use them!
+Kinda messy, but feel free to use them!
