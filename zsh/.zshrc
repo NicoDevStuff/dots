@@ -2,7 +2,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-HISTFILE=~/.cache/zsh/histfile
+HISTFILE=~/.config/zsh/histfile
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -16,6 +16,12 @@ zmodload zsh/complist
 compinit
 _comp_options+=(globdots)
 
+export PATH=$HOME/.local/bin:$PATH
+
+if [ -z "$XDG_CONFIG_HOME" ] ; then
+    export XDG_CONFIG_HOME="$HOME/.config"
+fi
+
 # plugins
 source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -27,9 +33,10 @@ colorscript random
 
 # youtube playlist downloading
 function download_playlist() {
-	yt-dlp --cookies-from-browser brave -x --audio-format wav -o "$2/%(title)s.%(ext)s" $1
+	yt-dlp --cookies-from-browser brave -x --audio-format wav -o "$2/%(playlist_index)s-%(title)s.%(ext)s" $1
 }
 
+alias mocp='mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc'
 alias clear="clear && colorscript random"
 alias vim="nvim"
 alias make="make -j 24" 
