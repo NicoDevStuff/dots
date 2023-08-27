@@ -30,6 +30,8 @@ source ~/.config/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 colorscript random
+# pfetch
+# neofetch
 
 # youtube playlist downloading
 function download_playlist() {
@@ -37,7 +39,6 @@ function download_playlist() {
 }
 
 alias mocp='mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc'
-alias clear="clear && colorscript random"
 alias vim="nvim"
 alias make="make -j 24" 
 alias ..="cd .."

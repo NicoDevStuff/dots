@@ -2,30 +2,41 @@
 
 MULTIMONITOR=1
 
-sxhkd &
-picom &
-killall nm-applet 
-nm-applet &
-killall volumeicon
-volumeicon &
-killall conky
-conky -c ~/.config/conky/bspwm/conky.conf
-~/.config/polybar/launch_polybar.sh &
-~/.screenlayout/main.sh &
-udiskie &
-easyeffects &
-solaar &
-xclip &
-dunst &
-nitrogen --restore &  
+# autostart
 
-if [ $MULTIMONITOR = 1 ]; then
-    bspc monitor DP-0 -d 1 2 3 4 5
-    bspc monitor DP-2 -d 6 7 8 9 0
-else
-    bspc monitor eDP1 -d 1 2 3 4 5 6 7 8 9
-fi
+# Function to check if an application is already running
+is_running() {
+    pgrep "$1" > /dev/null 2>&1
+}
 
+is_running sxhkd || sxhkd &
+is_running ~/.screenlayout/main.sh || ~/.screenlayout/main.sh &
+is_running nitrogen || nitrogen --restore &
+is_running dwmblocks || dwmblocks &
+is_running nm-applet || nm-applet &
+is_running volumeicon || volumeicon &
+# for laptop users only!
+# is_running cbatticon || cbatticon
+is_running conky || conky -c ~/.config/conky/qtile/conky.conf &
+is_running udiskie || udiskie &
+is_running xclip || xclip &
+is_running easyeffects || easyeffects &
+is_running solaar || solaar &
+is_running picom || picom &
+is_running protonvpn || protonvpn &
+~/.config/polybar/launch_polybar.sh
+
+# No more caps lock
+setxkbmap -option caps:none
+
+
+for monitor in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+do
+    # set the workspaces on each monitor to 1-9
+    bspc monitor $monitor -d 1 2 3 4 5 6 7 8 9
+    #polybar hidden when fullscreen for vlc, youtube, mpv ...
+    xdo below -t $(xdo id -n root) $(xdo id -a polybar-main_$monitor)
+done
 bspc config border_width                  2
 bspc config window_gap                    15
 bspc config top_padding                   20

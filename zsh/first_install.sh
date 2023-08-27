@@ -1,1 +1,1 @@
-ln ~/.config/zsh/zshenv ~/.zshenv
+ln ~/.config/zsh/.zshenv ~/.zshenv

@@ -20,7 +20,7 @@ scrolling:
 
 font:
   normal:
-    family: JetBrains Mono
+    family: JetBrainsMono Nerd Font Mono
     style: Regular
 
   bold:

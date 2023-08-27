@@ -12,9 +12,6 @@ super + shift + e
 super + shift + c
 	rofi -show calc
 
-@Caps_Lock
-	notify-send "🤓🤓🤓🤓" "<u><b>CAPS</b></u>" -u critical
-
 @Print
 	ksnip
 
@@ -45,13 +42,13 @@ XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 
-# Reload polybar
-super + Escape
-	$HOME/.config/polybar/launch_polybar.sh
-
 # Reload sxhkd
-super + shift + Escape
+super + shift + n
 	pkill -USR1 -x sxhkd
+
+# Reload polybar
+super + shift + m
+	~/.config/polybar/launch_polybar.sh
 
 #
 # bspwm hotkeys
@@ -95,8 +92,10 @@ super + {grave,Tab}
 	bspc {node,desktop} -f last
 
 # focus or send to the given desktop
-super + {0-9}
-	bspc desktop -f '^{1-9,10}'
+
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} focused:'^{1-9,10}'
+
 super + shift + {0-9}
 	bspc node -d {0-9} && bspunhide && bspc desktop -f {0-9}
 
@@ -120,4 +119,4 @@ super + Return
 	kitty
 
 super + b
-	firefox
+	brave
