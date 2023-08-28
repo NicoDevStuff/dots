@@ -11,7 +11,7 @@ local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
-local naughty = require("naughty")
+-- local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
@@ -22,9 +22,7 @@ require("awful.hotkeys_popup.keys")
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+	awful.spawn(string.format("/bin/sh -c notify-send 'Oops, there were errors during startup!' '%s' -u low"), awesome.startup_errors)
 end
 
 -- Handle runtime errors after startup
@@ -35,9 +33,8 @@ do
         if in_error then return end
         in_error = true
 
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
+		awful.spawn(string.format("/bin/sh -c notify-send 'Oops, an error happened!' '%s' -u low"), tostring(err))
+
         in_error = false
     end)
 end
@@ -45,7 +42,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init("~/.config/awesome/theme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -57,7 +54,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -79,10 +76,6 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.se,
 }
 -- }}}
-
--- Gaps
-beautiful.useless_gap = 5
-beautiful.gap_single_client = true
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -106,12 +99,9 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar
--- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+
+-- spacer = wibox.widget.spacer()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -168,6 +158,11 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+local spacer = wibox.widget.textbox(" ")
+mytextclock = wibox.widget.textclock()
+-- {{{ Wibar
+-- Create a textclock widget
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -214,10 +209,13 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+
+        	mytextclock,
+			spacer,
             wibox.widget.systray(),
-            mytextclock,
+			spacer,
             s.mylayoutbox,
+			spacer,
         },
     }
 end)
@@ -233,7 +231,7 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+    awful.key({ modkey, "Shift"   }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
@@ -269,19 +267,76 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
 
-    -- Standard program
+	-- Program keybinds
+
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
 
     awful.key({ modkey, "Shift"   }, "Return", function () awful.spawn("rofi -show drun") end,
-              {description = "open a terminal", group = "launcher"}),
+              {description = "open run launcher", group = "launcher"}),
+
+    awful.key({ modkey,   		  }, "c", function () awful.spawn("rofi -show calc -modi calc -no-show-match -no-sort") end,
+              {description = "open calculator", group = "launcher"}),
+
+    awful.key({ modkey,   		  }, "e", function () awful.spawn("rofimoji") end,
+              {description = "open emojis", group = "launcher"}),
+
+    awful.key({ modkey,  		  }, "s", function () awful.spawn("signal-desktop") end,
+              {description = "open signal", group = "launcher"}),
+
+    awful.key({ modkey,   		  }, "b", function () awful.spawn("brave") end,
+              {description = "open browser", group = "launcher"}),
+
+    awful.key({ modkey, "Shift"   }, "e", function () awful.spawn("thunderbird") end,
+              {description = "open email client", group = "launcher"}),
+
+    awful.key({ modkey,   		  }, "f", function () awful.spawn("pcmanfm") end,
+              {description = "open file manager", group = "launcher"}),
+
+    awful.key({ modkey, "Control" }, "n", function () awful.spawn("/bin/sh -c ~/.config/awesome/scripts/keylayout.sh") end,
+              {description = "change keyboard layout", group = "launcher"}),
+
+    awful.key({ modkey,  		  }, "space", function () awful.spawn("/bin/sh -c ~/.config/awesome/scripts/specialchars.sh") end,
+              {description = "change keyboard layout", group = "launcher"}),
 
 
-    awful.key({ modkey,  	      }, "r", awesome.restart,
+    awful.key({ modkey, "Shift"   }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
 
     awful.key({ modkey, "Shift"   }, "x", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+
+	-- media keys 🗿
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("/bin/sh -c '~/.config/awesome/scripts/volume.sh up'") end,
+              {description = "raise audio volume", group = "audio"}),
+
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("/bin/sh -c '~/.config/awesome/scripts/volume.sh down'") end,
+              {description = "lower audio volume", group = "audio"}),
+
+    awful.key({ }, "XF86AudioMute", function () awful.spawn("/bin/sh -c '~/.config/awesome/scripts/volume.sh mute'") end,
+              {description = "mute audio volume", group = "audio"}),
+
+    awful.key({ }, "XF86AudioPlay", function () awful.spawn("playerctl play-pause") end,
+              {description = "Pause audio", group = "audio"}),
+
+    awful.key({ }, "XF86AudioPrev", function () awful.spawn("playerctl previous") end,
+              {description = "Previous audio", group = "audio"}),
+
+    awful.key({ }, "XF86AudioNext", function () awful.spawn("playerctl next") end,
+              {description = "Next audio", group = "audio"}),
+
+    awful.key({ }, "XF86AudioMicMute", function () awful.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end,
+              {description = "Mute/Unmute mic", group = "audio"}),
+
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.spawn("brightnessctl set +5%") end,
+              {description = "make monitor brighter", group = "monitor"}),
+
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.spawn("brightnessctl set 5%-") end,
+              {description = "make monitor darker", group = "monitor"}),
+
+    awful.key({ }, "Print", function () awful.spawn("ksnip") end,
+              {description = "Screenshot tool", group = "launcher"}),
+	--------
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -329,6 +384,9 @@ clientkeys = gears.table.join(
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
+
+
+
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
@@ -499,6 +557,8 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+    awful.titlebar(c,{size=10})
+	awful.titlebar.hide(c)
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
@@ -550,34 +610,5 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- autostart
-do
-  local autostarts =
-  {
-    
-	"nm-applet",
-	"volumeicon",
-	-- "cbatticon",
-	"conky -c ~/.config/conky/awesome/conky.conf",
-	"udiskie",
-	"xclip",
-	"easyeffects",
-	"solaar",
-	"picom --experimental-backends",
-	"setxkbmap -option caps:none",
-  }
-
-  for _,i in pairs(autostarts) do
-    awful.spawn.easy_async_with_shell(
-      'ps -C '.. i ..' |wc -l',
-      function(stdout, stderr, reason, exit_code) 
-        gears.debug.dump(stdout)
-        if tonumber(stdout) or 0 < 2 then
-          awful.spawn(i)
-        end
-      end
-    )
-  end
-end
-
-awful.spawn.with_shell("nitrogen --restore")
+awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 -- }}}
