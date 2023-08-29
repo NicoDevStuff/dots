@@ -88,13 +88,20 @@ super + shift + {x,r}
 super + {_,shift + }q
 	bspc node -{c,k}
 
-
 super + shift + f
 	bspc node focused.tiled -t floating
 
 super + shift + d
 	bspc node focused.floating -t tiled
 
+super + shift + s
+	bspc node focused.tiled -t fullscreen
+
+super + shift + a
+	bspc node focused.fullscreen -t tiled 
+
+super + shift + { comma, period }
+	bspc node --to-monitor {\^1, \^2}
 #
 # focus/swap
 #
@@ -112,7 +119,7 @@ super + {_,shift + }{1-9}
 	bspc {desktop -f,node -d} focused:'^{1-9}'
 
 super + shift + {1-9}
-	bspc node -d {1-9} && bspunhide && bspc desktop -f {0-9}
+	bspc node -d {1-9} && bspunhide && bspc desktop -f {1-9}
 
 #
 # move/resize
@@ -120,10 +127,8 @@ super + shift + {1-9}
 
 # expand a window by moving one of its side outward
 super + control + {h,j,k,l}
-	bspc node -z {right -20 0,bottom 0 20,bottom 0 -20,right 20 0}
+	bspc node -z {left -60 0,bottom 0 60,top 0 -60,right 60 0}
 
-# move a floating window
-super + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}
-
-
+# contract a window by moving one of its side inward
+super + control + alt + {h,j,k,l}
+	bspc node -z {right -60 0,top 0 60,bottom 0 -60,left 60 0}
