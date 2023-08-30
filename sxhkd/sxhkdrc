@@ -130,5 +130,5 @@ super + control + {h,j,k,l}
 	bspc node -z {left -60 0,bottom 0 60,top 0 -60,right 60 0}
 
 # contract a window by moving one of its side inward
-super + control + alt + {h,j,k,l}
+super + control + shift + {h,j,k,l}
 	bspc node -z {right -60 0,top 0 60,bottom 0 -60,left 60 0}
