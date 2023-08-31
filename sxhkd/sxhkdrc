@@ -127,8 +127,13 @@ super + shift + {1-9}
 
 # expand a window by moving one of its side outward
 super + control + {h,j,k,l}
-	bspc node -z {left -60 0,bottom 0 60,top 0 -60,right 60 0}
+	~/.config/bspwm/scripts/resize.sh {decx,incy,decy,incx}
 
-# contract a window by moving one of its side inward
-super + control + shift + {h,j,k,l}
-	bspc node -z {right -60 0,top 0 60,bottom 0 -60,left 60 0}
+# PRESELECT
+
+# preselect the direction
+super + alt + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+super + alt + space
+	bspc node -p cancel
