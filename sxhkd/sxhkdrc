@@ -33,7 +33,7 @@ super + shift + e
 super + space
 	~/.config/bspwm/scripts/specialchars.sh
 
-super + mod1 + k
+super + shift + mod1 + k
 	~/.config/bspwm/scripts/keylayout.sh
 
 @Print
