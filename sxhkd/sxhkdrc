@@ -63,7 +63,7 @@ XF86AudioLowerVolume
 	~/.config/bspwm/scripts/volume.sh down
 
 XF86AudioMute
-	~/.config/bspwm/scripts/volume.sh down
+	~/.config/bspwm/scripts/volume.sh mute
 
 XF86AudioMicMute
 	pactl set-source-mute @DEFAULT_SOURCE@ toggle
