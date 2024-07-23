@@ -1,0 +1,8 @@
+plugin_dirs = ['/home/nico/vst3']
+vst2_location = 'centralized'
+no_verify = false
+blacklist = []
+
+[last_known_config]
+wine_version = 'wine-9.8 (Staging)'
+yabridge_host_hash = -8601703033867957043

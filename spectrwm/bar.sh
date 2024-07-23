@@ -1,44 +1,34 @@
-
 #!/bin/bash
 # baraction.sh for spectrwm status bar
 
-## DISK
-hdd() {
-  hdd="$(df -h | awk 'NR==4{print $3, $5}')"
-  echo -e "HDD: $hdd"
-}
-
-## RAM
-mem() {
-  mem=`free | awk '/Mem/ {printf "%dM/%dM\n", $3 / 1024.0, $2 / 1024.0 }'`
-  echo -e "$mem"
-}
-
-## CPU
-cpu() {
-  read cpu a b c previdle rest < /proc/stat
-  prevtotal=$((a+b+c+previdle))
-  sleep 0.5
-  read cpu a b c idle rest < /proc/stat
-  total=$((a+b+c+idle))
-  cpu=$((100*( (total-prevtotal) - (idle-previdle) ) / (total-prevtotal) ))
-  echo -e "CPU: $cpu%"
-}
-
-## VOLUME
-vol() {
-    vol=`aaa`
-    echo -e "VOL: $vol"
-}
-
+bar=""
+delim="|"
 SLEEP_SEC=3
-#loops forever outputting a line every SLEEP_SEC secs
 
-# It seems that we are limited to how many characters can be displayed via
-# the baraction script output. And the the markup tags count in that limit.
-# So I would love to add more functions to this script but it makes the 
-# echo output too long to display correctly.
+add_element() {
+	bar="$bar $1 $delim"
+}
+
+vol() {
+    if [ $(pamixer --get-mute) = "true" ]; then
+        echo " 🔇 "
+    else
+        echo " 🔊 $(pamixer --get-volume)% "
+    fi
+}
+
+status() {
+	add_element "$(vol)"
+	add_element "💻 $(echo ""$[100-$(vmstat 1 2|tail -1|awk '{print $15}')]"% ")"
+	add_element "🔥 $(echo "$(sensors | grep "Package id 0:" | tr -d '+' | awk '{print $4}')")"
+	add_element "🧠 $(echo "$(awk '/MemTotal/ {total=$2} /MemAvailable/ {available=$2} END {printf("%.2f%%\n", (total - available) / total * 100)}' /proc/meminfo)")"
+	add_element "📆 $(date +%F)"
+	add_element "🕒 $(date +%H:%M)"
+	echo $bar
+}
+
 while :; do
-	echo "aaaaaaa"
+	bar=""
+	status
 	sleep $SLEEP_SEC
 done

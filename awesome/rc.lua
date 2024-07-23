@@ -54,7 +54,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod1"
+modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -63,14 +63,14 @@ awful.layout.layouts = {
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
     awful.layout.suit.floating,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw,
+    -- awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
+    -- awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
@@ -158,64 +158,109 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
-local spacer = wibox.widget.textbox(" ")
-mytextclock = wibox.widget.textclock()
+local function script_widget(command, update, icon)
+	local output_widget = wibox.widget.textbox()
+
+	local timer = gears.timer({ timeout = update })
+	timer:connect_signal("timeout", function()
+		if icon == "" then
+			awful.spawn.easy_async_with_shell(command, function(stdout)
+				output_widget:set_text(stdout)
+			end)
+		else
+			awful.spawn.easy_async_with_shell(command, function(stdout)
+				output_widget:set_text(icon .. " " .. stdout)
+
+			end)
+		end
+	end)
+
+	timer:start()
+
+	return output_widget
+end
+
+local ramusage = script_widget("~/.config/awesome/scripts/ram.sh", 3, "🧠")
+local cpuusage = script_widget("~/.config/awesome/scripts/cpu.sh", 3, "💻")
+local cpuheat = script_widget("~/.config/awesome/scripts/cpuh.sh", 3, "🔥")
+local updates = script_widget("~/.config/awesome/scripts/updates.sh", 3, "📦")
+local time = script_widget("~/.config/awesome/scripts/time.sh", 1, "")
+local date = script_widget("~/.config/awesome/scripts/date.sh", 1, "")
+local volume = script_widget("~/.config/awesome/scripts/volume_icon.sh", 3, "")
+
+local spacer = wibox.widget.textbox(" | ")
+local spacer_empty = wibox.widget.textbox("  ")
+
 -- {{{ Wibar
--- Create a textclock widget
 
 awful.screen.connect_for_each_screen(function(s)
-    -- Wallpaper
     set_wallpaper(s)
 
-    -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
-    -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(-1) end)))
-    -- Create a taglist widget
+
     s.mytaglist = awful.widget.taglist {
         screen  = s,
-        filter  = awful.widget.taglist.filter.all,
+        filter  = awful.widget.taglist.filter.noempty,
+	   	style   = {
+		},
+		layout = {
+			spacing = 5,
+			layout  = wibox.layout.fixed.horizontal
+    	},
         buttons = taglist_buttons
     }
 
-    -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
         filter  = awful.widget.tasklist.filter.currenttags,
+
         buttons = tasklist_buttons
     }
 
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 25 })
 
-    -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        {
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
+
+		spacer,
+
+        {
             layout = wibox.layout.fixed.horizontal,
 
-        	mytextclock,
+			spacer_empty,
+			volume,
 			spacer,
-            wibox.widget.systray(),
+
+			updates,
 			spacer,
-            s.mylayoutbox,
+
+			cpuusage,
 			spacer,
+
+			cpuheat,
+			spacer,
+
+			ramusage,
+			spacer,
+
+        	date,
+			spacer,
+
+        	time,
+			spacer_empty,
         },
     }
 end)
@@ -252,8 +297,6 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -293,14 +336,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,   		  }, "f", function () awful.spawn("pcmanfm") end,
               {description = "open file manager", group = "launcher"}),
 
-    awful.key({ modkey, "Control" }, "n", function () awful.spawn("/bin/sh -c ~/.config/awesome/scripts/keylayout.sh") end,
-              {description = "change keyboard layout", group = "launcher"}),
-
-    awful.key({ modkey,  		  }, "space", function () awful.spawn("/bin/sh -c ~/.config/awesome/scripts/specialchars.sh") end,
-              {description = "change keyboard layout", group = "launcher"}),
-
-
-    awful.key({ modkey, "Shift"   }, "r", awesome.restart,
+			  awful.key({ modkey, "Shift"   }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
 
     awful.key({ modkey, "Shift"   }, "x", awesome.quit,
@@ -350,10 +386,6 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-              {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-              {description = "select previous", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
               function ()
@@ -365,14 +397,11 @@ globalkeys = gears.table.join(
                     )
                   end
               end,
-              {description = "restore minimized", group = "client"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "restore minimized", group = "client"})
 )
 
 clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
+    awful.key({ modkey, "Shift"}, "space",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
@@ -380,11 +409,8 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey   		  }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Shift" }, "f",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "client"}),
-
 
 
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
@@ -502,7 +528,6 @@ awful.rules.rules = {
      }
     },
 
-    -- Floating clients.
     { rule_any = {
         instance = {
           "DTA",  -- Firefox addon DownThemAll.
@@ -538,9 +563,6 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = true }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
 
@@ -610,5 +632,19 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- autostart
-awful.spawn.with_shell("~/.config/awesome/autostart.sh")
+-- awful.spawn.with_shell("~/.config/awesome/autostart.sh")
+do
+  	local autostarts =
+  	{
+		"~/.screenlayout/main.sh",
+    	"udiskie",
+		"xclip",
+		"easyeffects",
+		"solaar",
+  	}
+
+	for _,i in pairs(autostarts) do
+		awful.spawn.single_instance(i)
+  	end
+end
 -- }}}

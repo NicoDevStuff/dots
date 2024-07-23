@@ -5,6 +5,9 @@ fi
 HISTFILE=~/.config/zsh/histfile
 HISTSIZE=10000
 SAVEHIST=10000
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 autoload -U colors && colors
 bindkey -e
@@ -30,15 +33,12 @@ source ~/.config/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 colorscript random
-# pfetch
-# neofetch
 
 # youtube playlist downloading
 function download_playlist() {
 	yt-dlp --cookies-from-browser brave -x --audio-format wav -o "$2/%(playlist_index)s-%(title)s.%(ext)s" $1
 }
 
-alias mocp='mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc'
 alias vim="nvim"
 alias make="make -j 24" 
 alias ..="cd .."
@@ -47,13 +47,10 @@ alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
-# Changing 'ls' to 'exa' so it looks good :)
 alias ls='exa -al --icons --color=always --group-directories-first' # my preferred listing
 alias la='exa -a --icons --color=always --group-directories-first'  # all files and dirs
 alias ll='exa -l --icons --color=always --group-directories-first'  # long format
 alias lt='exa -aT --icons --color=always --group-directories-first' # tree listing
 alias l.='exa --icons -a | egrep "^\."'
-
 alias cat='bat'
 alias htop='btop -p 0'
-alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'

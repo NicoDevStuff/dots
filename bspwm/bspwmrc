@@ -4,23 +4,15 @@
 is_running() {
     pgrep "$1" > /dev/null 2>&1
 }
-INC=60
-echo $INC > ~/.config/bspwm/scripts/.inc
 
 is_running sxhkd || sxhkd &
 is_running ~/.screenlayout/main.sh || ~/.screenlayout/main.sh &
 is_running nitrogen || nitrogen --restore &
-is_running nm-applet || nm-applet &
-is_running volumeicon || volumeicon &
-# is_running cbatticon || cbatticon &
 is_running udiskie || udiskie &
 is_running xclip || xclip &
 is_running easyeffects || easyeffects &
 is_running solaar || solaar &
 is_running polybar || ~/.config/polybar/launch_polybar.sh
-
-# No more caps lock
-setxkbmap -option caps:none
 
 bspc monitor "DP-0" -d 1 2 3 4 5 6 7 8 9
 bspc monitor "HDMI-0" -d 1 2 3 4 5 6 7 8 9
@@ -40,3 +32,6 @@ bspc config focus_follows_pointer true
 bspc config remove_disabled_monitors true
 bspc config remove_unplugged_monitors true
 bspc config merge_overlapping_monitors true
+
+_JAVA_AWT_WM_NONREPARENTING=1
+wmname LG3D

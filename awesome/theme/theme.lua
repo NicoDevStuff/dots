@@ -11,11 +11,11 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "JetBrainsMono 13"
+theme.font          = "JetBrainsMono 12"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
+theme.bg_normal     = "#282828"
+theme.bg_focus      = "#458588"
+theme.bg_urgent     = "#fb4934"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
@@ -25,9 +25,9 @@ theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(10)
-theme.border_width  = dpi(3)
-theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
+theme.border_width  = dpi(2)
+theme.border_normal = "#282828"
+theme.border_focus  = "#83a598"
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -62,7 +62,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
+theme.menu_height = dpi(100)
 theme.menu_width  = dpi(100)
 
 -- You can add as many variables as
@@ -127,5 +127,3 @@ theme.awesome_icon = theme_assets.awesome_icon(
 theme.icon_theme = nil
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

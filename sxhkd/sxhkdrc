@@ -1,8 +1,3 @@
-#
-# wm independent hotkeys
-#
-
-# program launcher
 super + Return
 	kitty
 
@@ -12,7 +7,7 @@ super + shift + Return
 super + e
 	rofimoji
 
-super + shift + c
+super + c
 	rofi -show calc
 
 super + Tab
@@ -29,12 +24,6 @@ super + f
 
 super + shift + e
 	thunderbird	
-
-super + space
-	~/.config/bspwm/scripts/specialchars.sh
-
-super + shift + mod1 + k
-	~/.config/bspwm/scripts/keylayout.sh
 
 @Print
 	ksnip
